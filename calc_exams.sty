@@ -1,0 +1,121 @@
+%
+% advanced_calc.sty
+%
+% This is the LaTex style file for Calculus Exams and Handouts.
+%
+
+\RequirePackage{amssymb, amsfonts, amsmath, latexsym, verbatim, xspace, setspace}
+\RequirePackage{tikz}
+\usetikzlibrary{plotmarks}
+\RequirePackage{pgfplots}
+
+\pgfplotsset{compat=1.11}
+
+% By default LaTeX uses large margins.  This doesn't work well on exams; problems
+% end up in the "middle" of the page, reducing the amount of space for students
+% to work on them.
+\usepackage[margin=0.75in]{geometry}
+
+\usepackage{tkz-fct}
+\usepackage{tabularx}
+\usepackage{amsmath}
+
+% For an exam, single spacing is most appropriate
+\singlespacing
+% \onehalfspacing
+% \doublespacing
+
+% For an exam, we generally want to turn off paragraph indentation
+\parindent 0ex
+
+% These commands set up the running header on the top of the exam pages
+\pagestyle{headandfoot}
+\firstpageheader{\class}{\examnum\ - Page \thepage\ of \numpages}{\examdate\hspace{2ex}Initials: }
+\firstpageheadrule
+\runningheader{\class}{\examnum\ - Page \thepage\ of \numpages}{\examdate\hspace{2ex}Initials: }
+\runningheadrule
+
+\footer{\examhash}{}{\iflastpage{END OF EXAM}{Please go on to the next page\;$\rightarrow$}}
+
+% Print the points for each question in the right margin - cleaner.
+\pointsinrightmargin
+
+% CUSTOM LIST ENVIRONMENTS:
+%N Needed for rnl
+\usepackage{enumitem}
+% ROMAN NUMERAL LIST
+\newenvironment{rnl}
+{\begin{enumerate}[label=\Roman*.]}
+{\end{enumerate}}
+
+% NICE ENVIRONMENT FOR MULTIPLE CHOICE ANSWERS
+\newenvironment{mca}
+{\begin{enumerate}[label=(\Alph*)] }
+{\end{enumerate} }
+
+
+% USEFUL SHORTCUTS FOR MATH
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\dt}[1]{\dfrac{d#1}{dt}}
+
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+\newcommand{\lb}{\left[}
+\newcommand{\rb}{\right]}
+
+\newcommand{\evalat}{\biggr\rvert}
+
+% VECTORS
+\newcommand{\harpoon}{\overset{\rightharpoonup}}
+
+% For color in equations (used in math mode)
+\newcommand*{\mco}{}
+\def\mathcolor#1#{\mathcoloraux{#1}}
+\newcommand*{\mathcoloraux}[3]{%
+  \protect\leavevmode
+  \begingroup
+    \color#1{#2}#3%
+  \endgroup
+}
+
+% modify the question environment to prevent page
+% breaks in the middle of a mc question
+\newenvironment{mcquestion}[2]{    \begin{minipage}{\linewidth}    \question[#1] #2     \end{minipage}}
+
+
+% CONTROL HOW SOLUTIONS ARE PRINTED
+\shadedsolutions
+\definecolor{SolutionColor}{rgb}{0.8,0.9,1}
+\CorrectChoiceEmphasis{\color{red}\bfseries}
+
+% To customize the appearance of solutions
+\renewenvironment{TheSolution}%
+  {%
+    \vspace{\parskip}%
+    % If we don't set \leftskip and \rightskip to 0pt, then if we
+    % appear inside of an \uplevel command we'd have indentation
+    % inside of the solution box:
+    \leftskip=0pt
+    \rightskip=0pt
+    % If the user said \unframedsolutions, then both
+    % \if@framedsolutions and \if@shadedsolutions are false:
+    \if@framedsolutions
+      % We'll use the default \FrameCommand
+    \else
+      \if@shadedsolutions
+        \def\FrameCommand{\colorbox{SolutionColor}}%
+      \else
+        % It's \unframedsolutions:
+        \def\FrameCommand{}%
+      \fi
+    \fi
+    \MakeFramed{\advance\hsize-\width}%
+    \solutiontitle
+    \ignorespaces
+  }%
+  {%
+    \unskip
+    \endMakeFramed
+  }%
+
